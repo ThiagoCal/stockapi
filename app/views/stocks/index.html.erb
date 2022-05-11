@@ -6,17 +6,29 @@
   <table>
     <thead>
       <tr>
+        <th>Company</th>
         <th>Ticker</th>
-        <th>User</th>
+        <th>Price</th>
         <th colspan="3"></th>
       </tr>
     </thead>
 
     <tbody>
       <% @stocks.each do |stock| %>
+        <%  StockQuote::Stock.new(api_key: "pk_03f609bd3ac74f70b35c77418535c946") %>
+        <% if stock.ticker == "" %>
+          <% @nothing = "You forgot to enter a Symbol" %>
+        <% elsif stock.ticker %>
+          <% begin %>
+          <% @ticker = StockQuote::Stock.quote(stock.ticker) %>
+          <% rescue => e %>
+          <% @error = "Sorry, maybe you should try again, the symbol you wrote doesn't exist" %>
+          <% end %>
+        <% end %>
         <tr>
-          <td><%= stock.ticker %></td>
-          <td><%= stock.user_id %></td>
+          <td><%= @ticker.company_name %></td>
+          <td><%= @ticker.symbol %></td>
+          <td>USD <%= number_with_precision(@ticker.iex_realtime_price, :precision => 2, :delimiter => ",") %></td>
           <td><%= link_to 'Show', stock %></td>
           <td><%= link_to 'Edit', edit_stock_path(stock) %></td>
           <td><%= link_to 'Destroy', stock, method: :delete, data: { confirm: 'Are you sure?' } %></td>
