@@ -22,6 +22,7 @@ class StocksController < ApplicationController
 
   # POST /stocks or /stocks.json
   def create
+
     @stock = Stock.new(stock_params)
     @user = current_user
     @stock.user = @user
@@ -58,6 +59,8 @@ class StocksController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
