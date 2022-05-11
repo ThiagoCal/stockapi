@@ -1,11 +1,23 @@
 <% if @stock.user == current_user %>
+<%  StockQuote::Stock.new(api_key: "pk_03f609bd3ac74f70b35c77418535c946") %>
+<% @ticker = StockQuote::Stock.quote(@stock.ticker) %>
   <p id="notice"><%= notice %></p>
 
   <p>
     <strong>Ticker:</strong>
     <%= @stock.ticker %>
   </p>
-
+  <strong>Company Name:</strong><%= @ticker.company_name %><br/>
+  <strong>Current Ask:</strong><%= @ticker.iex_ask_price %><br/>
+  <strong>Change Percent:</strong><%= @ticker.change_percent %><br/>
+  <strong>Price/Earning Ratio:</strong><%= @ticker.pe_ratio %><br/>
+  <strong>Market Cap:</strong><%= @ticker.market_cap %><br/>
+  <strong>Stock Open:</strong><%= @ticker.open %><br/>
+  <strong>Days's Range:</strong><%= @ticker.low %> - <%= @ticker.high %><br/>
+  <strong>Year High:</strong><%= @ticker.week52_high %><br/>
+  <strong>Year Low:</strong><%= @ticker.week52_low %><br/>
+  <% @chart = StockQuote::Stock.batch("chart", @ticker.symbol,'6m') %>
+  <strong>Chart:</strong><%= @chart %><br/>
   <%= link_to 'Edit', edit_stock_path(@stock) %> |
   <%= link_to 'Back', stocks_path %>
 <% end %>
